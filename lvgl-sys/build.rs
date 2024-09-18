@@ -149,6 +149,11 @@ fn generate_bindings(conf: &BuildConf) {
         cc_args.push(target.as_str());
     }
 
+    println!(
+        "----------------------- TARGET = {}   HOST = {} -------------------------",
+        target, host
+    );
+
     let mut additional_args = Vec::new();
     if target.ends_with("emscripten") {
         match env::var("EMSDK") {

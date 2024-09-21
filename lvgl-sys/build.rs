@@ -144,16 +144,10 @@ fn generate_bindings(conf: &BuildConf) {
         |c| c.trim_end_matches('-').to_owned(),
     );
     let host = env::var("HOST").expect("Cargo build scripts always have HOST");
-    let home = env::var("HOME").expect("Missing HOME environmental");
-    let target_toolchain =
-        env::var("TARGET_TOOLCHAIN").expect("Missing TARGET_TOOLCHAIN environmental");
-    let target_toolchain_dir = format!("{}{}", home, target_toolchain);
 
     if target != host {
         cc_args.push("-target");
         cc_args.push(target.as_str());
-        cc_args.push("-I");
-        cc_args.push(target_toolchain_dir.as_str());
     }
 
     let mut additional_args = Vec::new();

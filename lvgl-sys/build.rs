@@ -173,6 +173,10 @@ fn generate_bindings(conf: &BuildConf) {
     if target != host {
         cc_args.push("-target");
         cc_args.push(target.as_str());
+        cc_args.push("-I");
+        cc_args.push(
+            "/.rustup/toolchains/esp/xtensa-esp-elf/esp-13.2.0_20230928/xtensa-esp-elf/include",
+        );
     }
 
     let mut additional_args = Vec::new();

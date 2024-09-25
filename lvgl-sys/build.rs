@@ -177,6 +177,8 @@ fn generate_bindings(conf: &BuildConf) {
         cc_args.push(
             "/.rustup/toolchains/esp/xtensa-esp-elf/esp-13.2.0_20230928/xtensa-esp-elf/include",
         );
+
+        p!("target != host ---- cc_args = {:?} ----", cc_args);
     }
 
     let mut additional_args = Vec::new();

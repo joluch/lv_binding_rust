@@ -175,7 +175,7 @@ fn generate_bindings(conf: &BuildConf) {
         cc_args.push(target.as_str());
         cc_args.push("-I");
         cc_args.push(
-            "/.rustup/toolchains/esp/xtensa-esp-elf/esp-13.2.0_20230928/xtensa-esp-elf/include",
+            "$HOME/.rustup/toolchains/esp/xtensa-esp-elf/esp-13.2.0_20230928/xtensa-esp-elf/xtensa-esp-elf/include",
         );
 
         p!("target != host ---- cc_args = {:?} ----", cc_args);

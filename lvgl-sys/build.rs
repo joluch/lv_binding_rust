@@ -24,7 +24,7 @@ impl bindgen::callbacks::ParseCallbacks for IgnoreMacros {
     }
 }
 
-// Show warning statements, use -vv
+// For debugging prints warning statements when using -vv
 macro_rules! p {
     ($($tokens: tt)*) => {
         println!("cargo:warning={}", format!($($tokens)*))
@@ -42,22 +42,13 @@ fn main() {
         println!("cargo:rerun-if-changed={}", p.to_str().unwrap())
     }
 
-    p!("----- Create BuildConf -----");
+    //p!("----- Create BuildConf -----");
     let conf = BuildConf {
         lv_config_dir: lv_config_dir.as_path(),
         vendor: vendor.as_path(),
         shims_dir: &shims_dir,
         font_extra_src: font_extra_src.as_ref().map(PathBuf::as_path),
     };
-
-    let host = env::var("HOST").expect("Cargo build scripts always have HOST");
-    let target = env::var("TARGET").expect("Cargo build scripts always have TARGET");
-
-    p!(
-        "main ---- HOST = {:?}      TARGET = {:?} ----",
-        host,
-        target
-    );
 
     #[cfg(feature = "library")]
     compile_library(&conf);
@@ -89,7 +80,6 @@ struct BuildConf<'a> {
 
 #[cfg(feature = "library")]
 fn compile_library(conf: &BuildConf) {
-    p!("----------- Compile library ----------");
     let vendor = conf.vendor;
 
     let lvgl_src = vendor.join("lvgl").join("src");
@@ -147,7 +137,6 @@ fn compile_library(conf: &BuildConf) {
 }
 
 fn generate_bindings(conf: &BuildConf) {
-    p!("---------- Generate Bindings ----------");
     let mut cc_args = vec![
         "-DLV_CONF_INCLUDE_SIMPLE=1",
         "-I",
@@ -164,17 +153,9 @@ fn generate_bindings(conf: &BuildConf) {
     );
     let host = env::var("HOST").expect("Cargo build scripts always have HOST");
 
-    p!(
-        "generate bindings ---- HOST = {:?}      TARGET = {:?} ----",
-        host,
-        target
-    );
-
     if target != host {
         cc_args.push("-target");
         cc_args.push(target.as_str());
-
-        p!("target != host ---- cc_args = {:?} ----", cc_args);
     }
 
     let mut additional_args = Vec::new();

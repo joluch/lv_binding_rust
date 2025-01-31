@@ -137,12 +137,16 @@ fn compile_library(conf: &BuildConf) {
 }
 
 fn generate_bindings(conf: &BuildConf) {
+    let target_c_include_path =
+        env::var("TARGET_C_INCLUDE_PATH").unwrap_or("/usr/include,/usr/local/include".to_string()); // Added
     let mut cc_args = vec![
         "-DLV_CONF_INCLUDE_SIMPLE=1",
         "-I",
         conf.lv_config_dir.to_str().unwrap(),
         "-I",
         conf.vendor.to_str().unwrap(),
+        "-I",                   // Added
+        &target_c_include_path, // Added
         "-fvisibility=default",
     ];
 

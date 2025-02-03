@@ -24,12 +24,14 @@ impl bindgen::callbacks::ParseCallbacks for IgnoreMacros {
     }
 }
 
+/*
 // For debugging prints warning statements when using -vv
 macro_rules! p {
     ($($tokens: tt)*) => {
         println!("cargo:warning={}", format!($($tokens)*))
     }
 }
+*/
 
 fn main() {
     let project_dir = canonicalize(PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap()));

@@ -171,6 +171,9 @@ fn generate_bindings(conf: &BuildConf) {
         cc_args.push(target.as_str());
     }
 
+    let cflags_extra = env::var("LVGL_CFLAGS").unwrap_or_default();
+    let cflags_extra = cflags_extra.split(',').filter(|s| !s.is_empty());
+
     let mut additional_args = Vec::new();
     if target.ends_with("emscripten") {
         match env::var("EMSDK") {

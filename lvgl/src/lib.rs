@@ -16,6 +16,8 @@
 #![cfg_attr(feature = "nightly", feature(cfg_accessible))]
 #![cfg_attr(feature = "nightly", feature(error_in_core))]
 
+pub use lvgl_sys as sys;
+
 #[macro_use]
 extern crate bitflags;
 
@@ -95,6 +97,7 @@ pub fn init() {
 ///
 /// After calling, ensure existing LVGL-related values are not accessed even if
 /// LVGL is reinitialized.
+#[cfg(not(feature = "custom_allocator"))]
 pub unsafe fn deinit() {
     unsafe {
         if IS_INIT {

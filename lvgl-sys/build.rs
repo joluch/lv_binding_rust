@@ -91,6 +91,10 @@ fn compile_library(conf: &BuildConf) {
     #[cfg(feature = "drivers")]
     let incl_extra =
         env::var("LVGL_INCLUDE").unwrap_or("/usr/include,/usr/local/include".to_string());
+
+    let cflags_extra = env::var("LVGL_CFLAGS").unwrap_or_default();
+    let cflags_extra = cflags_extra.split(',').filter(|s| !s.is_empty());
+
     #[cfg(feature = "drivers")]
     let link_extra = env::var("LVGL_LINK").unwrap_or("SDL2".to_string());
 
@@ -126,6 +130,11 @@ fn compile_library(conf: &BuildConf) {
     cfg.include(&drivers);
     #[cfg(feature = "drivers")]
     cfg.includes(incl_extra.split(','));
+
+    cflags_extra.clone().for_each(|e| {
+        let mut it = e.split('=');
+        cfg.define(it.next().unwrap(), it.next().unwrap_or_default());
+    });
 
     cfg.compile("lvgl");
 
@@ -219,6 +228,7 @@ fn generate_bindings(conf: &BuildConf) {
         .ctypes_prefix("cty")
         .clang_args(&cc_args)
         .clang_args(&additional_args)
+        .clang_args(cflags_extra.map(|f| format!("-D{f}")))
         .generate()
         .expect("Unable to generate bindings");
 

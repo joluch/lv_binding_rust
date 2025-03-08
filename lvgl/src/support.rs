@@ -76,6 +76,10 @@ impl Color {
     pub fn from_raw(raw: lvgl_sys::lv_color_t) -> Self {
         Self { raw }
     }
+    /// Returns the raw value
+    pub fn to_raw(&self) -> lvgl_sys::lv_color_t {
+        self.raw
+    }
     /// Returns the value of the red channel.
     pub fn r(&self) -> u8 {
         unsafe { lvgl_sys::_LV_COLOR_GET_R(self.raw) as u8 }

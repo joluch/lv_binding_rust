@@ -19,7 +19,7 @@ use crate::{font::Font, Align, Box, Color, TextAlign};
 use core::fmt;
 use core::fmt::Debug;
 use core::mem::{self, MaybeUninit};
-use cty::c_uint;
+use cty::{c_uint, c_void};
 use paste::paste;
 
 pub enum Themes {
@@ -502,7 +502,7 @@ impl Style {
     gen_lv_style!(set_bg_img_opa, Opacity);
     gen_lv_style!(set_bg_img_recolor, Color);
     gen_lv_style!(set_bg_img_recolor_opa, Opacity);
-    //gen_lv_style!(set_bg_img_src, );
+    gen_lv_style!(set_bg_img_src, *const c_void);
     gen_lv_style!(set_bg_img_tiled, bool);
     gen_lv_style!(set_bg_main_stop, i16);
     gen_lv_style!(set_bg_opa, Opacity);

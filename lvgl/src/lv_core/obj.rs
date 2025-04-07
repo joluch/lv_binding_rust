@@ -40,9 +40,10 @@ impl Debug for Obj<'_> {
 // We need to manually impl methods on Obj since widget codegen is defined in
 // terms of Obj
 impl<'a> Obj<'a> {
-    pub fn create(parent: &'a mut impl NativeObject) -> LvResult<Self> {
+    pub fn create(parent: &'a impl NativeObject) -> LvResult<Self> {
         unsafe {
-            let ptr = lvgl_sys::lv_obj_create(parent.raw().as_mut());
+            let p_obj: *const lvgl_sys::lv_obj_t = parent.raw().as_ref();
+            let ptr = lvgl_sys::lv_obj_create( p_obj as *mut _ );
             if let Some(nn_ptr) = ptr::NonNull::new(ptr) {
                 //(*ptr).user_data = Box::new(UserDataObj::empty()).into_raw() as *mut _;
                 Ok(Self {

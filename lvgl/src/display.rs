@@ -11,6 +11,25 @@ use core::pin::Pin;
 use core::ptr::NonNull;
 use core::{ptr, result};
 
+#[repr(C)]
+pub enum ScreenLoadAnim {
+    None,
+    OverLeft,
+    OverRight,
+    OverTop,
+    OverBottom,
+    MoveLeft,
+    MoveRight,
+    MoveTop,
+    MoveBottom,
+    FadeIn,
+    FadeOut,
+    OutLeft,
+    OutRight,
+    OutTop,
+    OutBottom,
+}
+
 /// Error in interacting with a `Display`.
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub enum DisplayError {
@@ -80,6 +99,21 @@ impl<'a> Display {
     pub fn set_scr_act(&'a self, screen: &'a Screen) {
         let scr_ptr: *const lvgl_sys::lv_obj_t = unsafe { screen.raw().as_ref() };
         unsafe { lvgl_sys::lv_disp_load_scr(scr_ptr as *mut _) }
+    }
+
+    /// Sets a `Screen` as currently active with animation.
+    pub fn set_scr_act_anim(
+        &'a self,
+        screen: &'a Screen,
+        anim_type: ScreenLoadAnim,
+        time: u32,
+        delay: u32,
+        auto_del: bool,
+    ) {
+        let scr_ptr: *const lvgl_sys::lv_obj_t = unsafe { screen.raw().as_ref() };
+        unsafe {
+            lvgl_sys::lv_scr_load_anim(scr_ptr as *mut _, anim_type as u32, time, delay, auto_del)
+        }
     }
 
     /// Registers a display from raw functions and values.

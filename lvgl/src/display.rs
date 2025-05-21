@@ -333,9 +333,9 @@ pub struct Area {
 /// An update to the display information, contains the area that is being
 /// updated and the color of the pixels that need to be updated. The colors
 /// are represented in a contiguous array.
-pub struct DisplayRefresh<const N: usize> {
+pub struct DisplayRefresh<'a, const N: usize> {
     pub area: Area,
-    pub colors: [Color; N],
+    pub colors: &'a [Color; N],
 }
 
 #[cfg(feature = "embedded_graphics")]
@@ -344,7 +344,7 @@ mod embedded_graphics_impl {
     use embedded_graphics::prelude::*;
     use embedded_graphics::Pixel;
 
-    impl<const N: usize> DisplayRefresh<N> {
+    impl<'a, const N: usize> DisplayRefresh<'a, N> {
         pub fn as_pixels<C>(&self) -> impl IntoIterator<Item = Pixel<C>> + '_
         where
             C: PixelColor + From<Color>,
@@ -383,11 +383,13 @@ unsafe extern "C" fn disp_flush_trampoline<'a, F, const N: usize>(
     if !display_driver.user_data.is_null() {
         let callback = &mut *(display_driver.user_data as *mut F);
 
-        let mut colors = [Color::default(); N];
-        for (color_len, color) in colors.iter_mut().enumerate() {
-            let lv_color = *color_p.add(color_len);
-            *color = Color::from_raw(lv_color);
-        }
+        let colors = unsafe { core::mem::transmute::<_, &[Color; N]>(color_p) };
+
+        // let mut colors = &[Color::default(); N];
+        // for (color_len, color) in colors.iter_mut().enumerate() {
+        //     let lv_color = *color_p.add(color_len);
+        //     *color = Color::from_raw(lv_color);
+        // }
 
         let update = DisplayRefresh {
             area: Area {

@@ -49,7 +49,7 @@ fn main() {
         lv_config_dir: lv_config_dir.as_path(),
         vendor: vendor.as_path(),
         shims_dir: &shims_dir,
-        font_extra_src: font_extra_src.as_ref().map(PathBuf::as_path),
+        font_extra_src: font_extra_src.as_deref(),
     };
 
     #[cfg(feature = "library")]
@@ -120,7 +120,7 @@ fn compile_library(conf: &BuildConf) {
 
     cfg.define("LV_CONF_INCLUDE_SIMPLE", Some("1"))
         .include(&lvgl_src)
-        .include(&vendor)
+        .include(vendor)
         .warnings(false)
         .include(conf.lv_config_dir);
     if let Some(p) = conf.font_extra_src {

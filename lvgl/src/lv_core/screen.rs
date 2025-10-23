@@ -23,10 +23,7 @@ impl<'a> Widget<'a> for Screen<'a> {
     type Part = Part;
 
     unsafe fn from_raw(raw: core::ptr::NonNull<lvgl_sys::lv_obj_t>) -> Option<Self> {
-        match Self::try_from(Obj::from_raw(raw)?) {
-            Ok(s) => Some(s),
-            Err(_) => None,
-        }
+        Self::try_from(Obj::from_raw(raw)?).ok()
     }
 }
 

@@ -1,4 +1,3 @@
-use crate::lv_core::obj::NativeObject;
 use crate::widgets::Arc;
 
 impl Arc<'_> {

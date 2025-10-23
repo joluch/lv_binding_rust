@@ -20,7 +20,7 @@
 //! fn main() {
 //!     // IMPORTANT: Initialize a display driver first!
 //!     // ...
-//!     // Define the initial state of your input//! 
+//!     // Define the initial state of your input//!
 //!     let mut latest_touch_status = PointerInputData::Touch(Point::new(0, 0)).released().once();
 //!     // Register a new input device that's capable of reading the current state of the input
 //!     let pointer = Pointer::register(|| latest_touch_status, &display).unwrap();

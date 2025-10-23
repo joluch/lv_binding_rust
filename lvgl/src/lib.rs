@@ -82,12 +82,12 @@ static mut IS_INIT: bool = true;
 /// Initializes LVGL. Call at the start of the program, or after safely
 /// deinitializing with `deinit()`.
 pub fn init() {
-    unsafe {
-        if !IS_INIT {
-            lvgl_sys::lv_init();
-            IS_INIT = true;
-        }
-    }
+	unsafe {
+		if !IS_INIT {
+			lvgl_sys::lv_init();
+			IS_INIT = true;
+		}
+	}
 }
 
 /// Uninitializes LVGL. Make sure to reinitialize LVGL with `init()` before
@@ -99,33 +99,33 @@ pub fn init() {
 /// LVGL is reinitialized.
 #[cfg(not(feature = "custom_allocator"))]
 pub unsafe fn deinit() {
-    unsafe {
-        if IS_INIT {
-            lvgl_sys::lv_deinit();
-            IS_INIT = false;
-        }
-    }
+	unsafe {
+		if IS_INIT {
+			lvgl_sys::lv_deinit();
+			IS_INIT = false;
+		}
+	}
 }
 
 #[cfg(not(feature = "unsafe_no_autoinit"))]
 #[ctor::ctor]
 fn once_init() {
-    unsafe {
-        lvgl_sys::lv_init();
-    }
+	unsafe {
+		lvgl_sys::lv_init();
+	}
 }
 
 #[cfg(test)]
 pub(crate) mod tests {
-    use crate::display::{Display, DrawBuffer};
+	use crate::display::{Display, DrawBuffer};
 
-    pub(crate) fn initialize_test(buf: bool) {
-        unsafe { crate::deinit() };
-        crate::init();
-        if buf {
-            const REFRESH_BUFFER_SIZE: usize = 240 * 240 / 10;
-            let buffer = DrawBuffer::<REFRESH_BUFFER_SIZE>::default();
-            let _ = Display::register(buffer, 240, 240, |_| {}).unwrap();
-        }
-    }
+	pub(crate) fn initialize_test(buf: bool) {
+		unsafe { crate::deinit() };
+		crate::init();
+		if buf {
+			const REFRESH_BUFFER_SIZE: usize = 240 * 240 / 10;
+			let buffer = DrawBuffer::<REFRESH_BUFFER_SIZE>::default();
+			let _ = Display::register(buffer, 240, 240, |_| {}).unwrap();
+		}
+	}
 }

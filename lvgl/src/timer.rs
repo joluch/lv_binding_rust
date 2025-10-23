@@ -58,17 +58,17 @@ static mut RET_VAL: u32 = 0;
 
 /// An LVGL-compatible clock
 pub trait LvClock {
-    /// Returns the time since the clock was first initialized
-    fn since_init(&self) -> Duration;
+	/// Returns the time since the clock was first initialized
+	fn since_init(&self) -> Duration;
 }
 
 /// Synchronize the clock with LVGL. FIXME: When to call
 pub fn update_clock(clock: &impl LvClock) -> Result<(), TryFromIntError> {
-    unsafe { RET_VAL = clock.since_init().as_millis().try_into()? }
-    Ok(())
+	unsafe { RET_VAL = clock.since_init().as_millis().try_into()? }
+	Ok(())
 }
 
 #[no_mangle]
 unsafe extern "C" fn rs_lv_timer() -> u32 {
-    RET_VAL
+	RET_VAL
 }

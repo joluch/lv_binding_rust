@@ -9,7 +9,7 @@ include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
 #[cfg(feature = "raw-bindings")]
 pub fn _bindgen_raw_src() -> &'static str {
-    include_str!(concat!(env!("OUT_DIR"), "/bindings.rs"))
+	include_str!(concat!(env!("OUT_DIR"), "/bindings.rs"))
 }
 
 #[cfg(feature = "library")]
@@ -17,18 +17,18 @@ mod string_impl;
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+	use super::*;
 
-    #[test]
-    fn basic_sanity_check() {
-        unsafe {
-            lv_init();
+	#[test]
+	fn basic_sanity_check() {
+		unsafe {
+			lv_init();
 
-            let horizontal_resolution = lv_disp_get_hor_res(core::ptr::null_mut());
-            assert_eq!(horizontal_resolution, 0);
+			let horizontal_resolution = lv_disp_get_hor_res(core::ptr::null_mut());
+			assert_eq!(horizontal_resolution, 0);
 
-            let vertical_resolution = lv_disp_get_ver_res(core::ptr::null_mut());
-            assert_eq!(vertical_resolution, 0);
-        }
-    }
+			let vertical_resolution = lv_disp_get_ver_res(core::ptr::null_mut());
+			assert_eq!(vertical_resolution, 0);
+		}
+	}
 }
